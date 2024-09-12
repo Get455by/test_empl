@@ -1,0 +1,51 @@
+<!-- department_tree.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Древо отделов</title>
+    <!-- Подключение Bootstrap CSS через CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Древовидная структура отделов</h2>
+    <ul class="list-group">
+        {% for department in departments %}
+            <li class="list-group-item">
+                <a href="#collapse-dept-{{ department.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-dept-{{ department.id }}" class="d-block">
+                    <strong>{{ department.name }}</strong>
+                </a>
+                <div class="collapse" id="collapse-dept-{{ department.id }}">
+                    <ul class="list-group mt-2">
+                        {% for child in department.children.all %}
+                            <li class="list-group-item">
+                                <a href="#collapse-child-{{ child.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-child-{{ child.id }}" class="d-block">
+                                    {{ child.name }}
+                                </a>
+                                <div class="collapse" id="collapse-child-{{ child.id }}">
+                                    <ul class="list-group mt-2">
+                                        {% for emp in child.employees.all %}
+                                            <li class="list-group-item">
+                                                {{ emp.full_name }} - {{ emp.position }} - {{ emp.salary }} - {{ emp.hire_date }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- Подключение jQuery перед Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
